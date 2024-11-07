@@ -31,6 +31,25 @@ export class HaxItem extends DDDSuper(LitElement) {
     }
 
     render() {
-        
+        return html`
+        <a href= ${this.contentLink} target="_blank">
+            <div class="haxCard">
+                <img src="${this.logo}" /> 
+                <h1>${this.title}</h1>
+                <slot>Last Updated: ${this.lastUpdate}</slot>
+                <slot>Description: ${this.description}</slot>
+                <a href= ${this.contentLink} target="_blank">
+                    <button>Open Content</button>
+                </a>
+                <a href= ${this.sourceLink} target="_blank">
+                    <button>Open Source</button>
+                </a>
+            </div>
+        </a>
+        `;
+    }
+
+    static get tag() {
+        return "hax-card";
     }
 }
