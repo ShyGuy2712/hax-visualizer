@@ -66,10 +66,41 @@ export class HaxVisualizer extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-<div class="wrapper">
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <slot></slot>
-</div>`;
+      <div class="wrapper">
+        
+        <div class="searchBar">
+          <input
+            class="searchBar"
+            type="text"
+            placeholder="https://haxtheweb.org/site.json (Replace with your URL)" 
+            @input="${this.inputUpdate}" />
+        </div>
+
+        <a href= '' target="_blank">      <!-- Need a Link -->
+          <div class="previewCard">
+            <img src="" />                <!-- Need an img -->
+            <h1>${this.siteName}</h1>
+            <slot>Description: ${this.description}</slot>   <!-- Need to make these properties -->
+            <slot>Created: ${this.created}</slot>
+            <slot>Last Updated: ${this.lastUpdate}</slot>
+          </div>
+        </a>
+
+        <div class="results">
+          ${this.items.map((item, index) => html`
+            <hax-card
+            title="${item.metadata.site.name}"              
+            logo="${item.metadata.site.logo}"
+            lastUpdate="${item.metadata.site.updated}"
+            description=
+            contentLink=
+            sourceLink=
+            ></hax-card>      <!-- Scour the JSON -->
+              `)}
+        </div>
+
+      </div>
+    `;
   }
 
   /**
