@@ -60,6 +60,9 @@ export class HaxVisualizer extends DDDSuper(I18NMixin(LitElement)) {
       h3 span {
         font-size: var(--hax-visualizer-label-font-size, var(--ddd-font-size-s));
       }
+      .searchBar {
+        
+      }
     `];
   }
 
@@ -72,22 +75,23 @@ export class HaxVisualizer extends DDDSuper(I18NMixin(LitElement)) {
           <input
             class="searchBar"
             type="text"
-            placeholder="https://haxtheweb.org/site.json (Replace with your URL)" 
+            placeholder="Enter HaxTheWeb url"
             @input="${this.inputUpdate}" />
+          <button @click="${this.getData}">Search</button>
         </div>
 
         <a href= '' target="_blank">      <!-- Need a Link -->
           <div class="previewCard">
             <img src="" />                <!-- Need an img -->
             <h1>${this.siteName}</h1>
-            <slot>Description: ${this.description}</slot>   <!-- Need to make these properties -->
-            <slot>Created: ${this.created}</slot>
-            <slot>Last Updated: ${this.lastUpdate}</slot>
+            <slot><strong>Description:</strong> ${this.description}</slot>   <!-- Need to make these properties -->
+            <slot><strong>Created:</strong> ${this.created}</slot>
+            <slot><strong>Last Updated:</strong> ${this.lastUpdate}</slot>
           </div>
         </a>
 
         <div class="results">
-          ${this.items.map((item, index) => html`
+          ${this.items.map((item, index) => html`xs
             <hax-card
             title="${item.metadata.site.name}"              
             logo="${item.metadata.site.logo}"
