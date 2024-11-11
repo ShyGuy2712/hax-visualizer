@@ -33,13 +33,84 @@
 </head>
 
 <body>
-  <div id="demo">
-    <h1>hax-visualizer</h1>
-    <!-- this is going to do whatever the tag's defaults are -->
-    <h2>Default</h2>
-    <hax-visualizer></hax-visualizer>
+  <div id="container">
+    <h1>HAX Visualizer</h1>
+    <!-- Search bar -->
+    <div class="searchBar">
+      <label for="url-input">Enter HAX URL:</label>
+      <input type="url" id="urlInput" placeholder="Insert HAX URL here" required>
+      <button id="searchButton">Analyze</button>
+    </div>
+
+    <!-- Preview Section -->
+    <section id="preview">
+      <h2>Site Preview</h2>
+      <div id="siteInfo">
+        <p>Name: <span id="siteName"></span></p>
+        <p>Description: <span id="description"></span></p>
+        <p>Logo: <span id="siteLogo"></span></p>
+        <p>Theme: <span id="siteTheme"></span></p>
+        <p>Created: <span id="created"></span></p>
+        <p>Last Updated: <span id="lastUpdate"></span></p>
+      </div>
+    </section>
+
+    <!-- Card Section -->
+    <section id="cards">
+      <h2>Items</h2>
+      <div class="cardContainer" id="cardContainer">
+      </div>
+    </section>
   </div>
+
   <script type="module" src="./hax-visualizer.js"></script>
+  <script>
+    document.getElementById('searchButton').addEventListener('click', async () => {
+      const urlInput = document.getElementById('urlInput').value;
+      if (!urlInput) return alert('Please enter a valid URL.');
+
+      // Add "/site.json" if needed
+      const fetchURL = urlInput.endsWith('/site.json') ? urlInput : `${urlInput}/site.json`;
+
+      try {
+        const response = await fetch(fetchURL);
+        if (!response.ok) throw new Error('Failed to fetch site.json');
+
+        const siteData = await response.json();
+        updateOverview(siteData);
+        displayItems(siteData.items || []);
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
+    });
+
+    function updateOverview(data) {
+      document.getElementById('siteName').textContent = data.name || 'N/A';
+      document.getElementById('description').textContent = data.description || 'N/A';
+      document.getElementById('siteLogo').textContent = data.logo || '';
+      document.getElementById('siteTheme').textContent = data.theme || 'N/A';
+      document.getElementById('created').textContent = data.created || 'N/A';
+      document.getElementById('lastUpdate').textContent = data.lastUpdated || 'N/A';
+    }
+
+    function displayItems(items) {
+      const cardContainer = document.getElementById('cardContainer');
+      cardContainer.innerHTML = '';
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        card.innerHTML = `
+          <h3>${item.title || 'Untitled'}</h3>
+          <p>${item.description || ''}</p>
+          ${item.image ? `<img src="${item.image}" alt="${item.title}" width="100%">` : ''}
+          <a href="${item.url}" target="_blank">View Source</a>
+          `;
+          cardContainer.appendChild(card);
+      })
+    }
+  </script>
 
 
 </body>
