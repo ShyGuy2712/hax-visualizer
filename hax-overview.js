@@ -34,6 +34,7 @@ export class HaxOverview extends DDDSuper(I18NMixin(LitElement)) {
                 gap: var(--ddd-spacing-2, 12px);
                 width: fit-content;
                 padding: var(--ddd-spacing-4, 20px);
+                margin: auto;
                 font-size: 16px;
                 color: var(--ddd-theme-default-nittanyNavy);
                 border: var(--ddd-border-sm);
@@ -53,7 +54,7 @@ export class HaxOverview extends DDDSuper(I18NMixin(LitElement)) {
 
             .overview-container img {
                 display: block;
-                height: 150px;
+                height: 300px;
             }
             `];
     }
@@ -61,19 +62,24 @@ export class HaxOverview extends DDDSuper(I18NMixin(LitElement)) {
     render() {
         return html`
             <div class="overview-container" style="background-color:${this.hexCode}">
+    <!-- seperate div for img -->
                 <div class="img-container">
+    <!-- If logo exists, render it, else, put "No Logo Available" -->
                     ${this.logo 
                         ? html`<img src="https://haxtheweb.org/${this.logo}" alt="${this.title}" />`
                         : html`<div>No Logo Available</div>`}
                 </div>
 
+    <!-- seperate div for text -->
                 <div class="text">
                     <div class="title">
                         <a href="https://haxtheweb.org/${this.slug}" target="_blank" rel="nooperner noreferrer">
+    <!-- If icon exists, render it, else, render nothing -->
                             ${this.icon ? html`<simple-icon icon="${this.icon}"></simple-icon>` : ""}
                             ${this.title}
                         </a>
                     </div>
+    <!-- If data point exists, create a <p> for each and fill with data, else, render nothing -->
                     ${this.description ? html`<p><strong>Description: </strong>${this.description}</p>` : ""}
                     ${this.created ? html`<p><strong>Date Created: </strong>${this.created}</p>` : ""}
                     ${this.updated ? html`<p><strong>Last Updated: </strong>${this.updated}</p>` : ""}
@@ -87,5 +93,6 @@ export class HaxOverview extends DDDSuper(I18NMixin(LitElement)) {
         return 'hax-overview';
     }
 }
+
 
 customElements.define(HaxOverview.tag, HaxOverview);

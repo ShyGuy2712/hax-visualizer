@@ -28,13 +28,13 @@ export class HaxCard extends DDDSuper(LitElement) {
                     border: var(--ddd-border-sm);
                     border-radius: var(--ddd-redius-sm);
                     padding: var(--ddd-spacing-3);
-                    width: 300px;
-                    height: 450px;
+                    width: 600px;
+                    height: 900px;
                     outline: 4px solid var(--ddd-theme-default-skyBlue);
                 }
                 
                 .img-container {
-                    height: 200px;
+                    height: 400px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -53,13 +53,14 @@ export class HaxCard extends DDDSuper(LitElement) {
                 }
 
                 .description, .created, .lastUpdate {
-                    font-size: 16px;
+                    font-size: 32px;
                     text-align: center;
+                    overflow: auto;
                 }
 
                 .imgPlaceholder {
                     width: 100%;
-                    height: 200px;
+                    height: 400px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -74,24 +75,29 @@ export class HaxCard extends DDDSuper(LitElement) {
 
     render() {
         return html`
+    <!-- div for card, allows for user to click the entire div to open the slug -->
             <div
                 class="card"
-                @clcik="${this.openSlug}"
+                @click="${this.openSlug}"
                 @keydown="${this.handleKeydown}"
                 tabindex="0"
                 aria-label="${this.title}"
                 >
+    <!-- div for img -->
                 <div class="img-container">
-                    ${this.logo 
+    <!-- If logo exists, render it with appropriate alt tag, else, render a placeholder div -->
+                   ${this.logo 
                         ? html`<img src="https://haxtheweb.org/${this.logo}" alt="${this.title}" />`
                         : html`<div class="imgPlaceholder">No Image</div>`
                     }
                 </div>
-
+    <!-- div for text info -->
                 <div class="info">
+    <!-- if slug starts with "http", change it to "https" -->
                     <a href="${this.slug.startsWith('http') ? this.slug : `https://haxtheweb.org/${this.slug}`}" target="_blank" @click="${this.stopPropagation}">${this.title}</a>
                 </div>
 
+    <!-- make seperate divs for each item -->
                 <div class="description">${this.description}</div>
                 <div class="created">Created: ${this.created}</div>
                 <div class="lastUpdate">Last Updated: ${this.lastUpdate}</div>
@@ -103,7 +109,9 @@ export class HaxCard extends DDDSuper(LitElement) {
         `;
     }
 
+    // allows user to open to the slug
     openSlug(event) {
+        // if slug exists, create link to slug, else, throw error
         if (this.slug) {
             const url = this.slug.startsWith("http")
                 ? this.slug
@@ -115,12 +123,14 @@ export class HaxCard extends DDDSuper(LitElement) {
         }
     }
 
+    // allows for users to hit "enter" instead of clicking on each card to open the slug
     handleKeydown(event) {
         if (event.key === "Enter" || event.key === " ") {
             this.openSlug();
         }
     }
 
+    // method to prevent event bubbling/capturing
     stopPropagation(event) {
         event.stopPropagation();
     }
